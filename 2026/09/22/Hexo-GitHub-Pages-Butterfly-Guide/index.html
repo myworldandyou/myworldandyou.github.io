@@ -1,0 +1,360 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Hexo + GitHub Pages + Butterfly 博客搭建与部署教程 | 计算机网络实验指导</title><meta name="author" content="王国康"><meta name="copyright" content="王国康"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="从环境准备、Hexo 初始化、Butterfly 配置到 GitHub Pages 发布，讲解本博客采用的双分支部署方案。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo + GitHub Pages + Butterfly 博客搭建与部署教程">
+<meta property="og:url" content="https://myworldandyou.github.io/2026/09/22/Hexo-GitHub-Pages-Butterfly-Guide/index.html">
+<meta property="og:site_name" content="计算机网络实验指导">
+<meta property="og:description" content="从环境准备、Hexo 初始化、Butterfly 配置到 GitHub Pages 发布，讲解本博客采用的双分支部署方案。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://myworldandyou.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-22T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-22T02:00:00.000Z">
+<meta property="article:author" content="王国康">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="GitHub Pages">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://myworldandyou.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Hexo + GitHub Pages + Butterfly 博客搭建与部署教程",
+  "url": "https://myworldandyou.github.io/2026/09/22/Hexo-GitHub-Pages-Butterfly-Guide/",
+  "image": "https://myworldandyou.github.io/img/butterfly-icon.png",
+  "datePublished": "2026-09-22T02:00:00.000Z",
+  "dateModified": "2026-09-22T02:00:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "王国康",
+      "url": "https://myworldandyou.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://myworldandyou.github.io/2026/09/22/Hexo-GitHub-Pages-Butterfly-Guide/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hexo + GitHub Pages + Butterfly 博客搭建与部署教程',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">计算机网络实验指导</span></a><a class="nav-page-title" href="/"><span class="site-name">Hexo + GitHub Pages + Butterfly 博客搭建与部署教程</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Hexo + GitHub Pages + Butterfly 博客搭建与部署教程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-22T02:00:00.000Z" title="发表于 2026-09-22 10:00:00">2026-09-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-22T02:00:00.000Z" title="更新于 2026-09-22 10:00:00">2026-09-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/">网站部署</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><p>本文记录本站使用的博客部署方案：用 Hexo 管理文章和生成静态页面，以 Butterfly 作为主题，通过 GitHub Pages 对外发布。完成配置后，日常更新只需要编写 Markdown、预览、保存源码和部署网页。</p>
+<span id="more"></span>
+
+<h2 id="部署结构"><a href="#部署结构" class="headerlink" title="部署结构"></a>部署结构</h2><p>本站在同一个 GitHub 仓库中使用两个分支：</p>
+<table>
+<thead>
+<tr>
+<th>分支</th>
+<th>保存内容</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>hexo-source</code></td>
+<td>Markdown、Hexo 配置、主题和依赖清单</td>
+<td>保存可继续编辑的博客源码</td>
+</tr>
+<tr>
+<td><code>main</code></td>
+<td>HTML、CSS、JavaScript 和图片</td>
+<td>由 GitHub Pages 直接发布</td>
+</tr>
+</tbody></table>
+<p>完整更新过程如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">编辑 source/_posts 中的 Markdown</span><br><span class="line">                ↓</span><br><span class="line">       Hexo 生成 public</span><br><span class="line">                ↓</span><br><span class="line">     hexo deploy 推送 main</span><br><span class="line">                ↓</span><br><span class="line">       GitHub Pages 发布</span><br></pre></td></tr></table></figure>
+
+<p>源码和生成结果需要分开管理。<code>source/_posts</code> 中的 Markdown 才是文章源文件，<code>public</code> 可以随时通过 Hexo 重新生成。</p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>需要安装 <a target="_blank" rel="noopener" href="https://nodejs.org/">Node.js</a>、<a target="_blank" rel="noopener" href="https://git-scm.com/">Git</a> 并拥有 GitHub 账号。在 PowerShell 中检查版本：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node <span class="literal">--version</span></span><br><span class="line">npm <span class="literal">--version</span></span><br><span class="line">git <span class="literal">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>如果命令能够显示版本号，说明程序已经可以使用。</p>
+<p>Hexo 可以全局安装：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install <span class="literal">-g</span> hexo<span class="literal">-cli</span></span><br><span class="line">hexo version</span><br></pre></td></tr></table></figure>
+
+<p>也可以不全局安装，通过 <code>npx hexo</code> 调用项目中的 Hexo。团队协作或多项目环境更适合使用本地版本，避免不同项目之间发生版本冲突。</p>
+<h2 id="创建-Hexo-项目"><a href="#创建-Hexo-项目" class="headerlink" title="创建 Hexo 项目"></a>创建 Hexo 项目</h2><p>新建博客时，在准备好的空目录中执行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npx hexo init blog</span><br><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>启动本地预览：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx hexo server</span><br></pre></td></tr></table></figure>
+
+<p>浏览器打开 <code>http://localhost:4000</code>。停止预览时，在终端按 <code>Ctrl+C</code>。</p>
+<div class="note info flat"><p>已经存在的 Hexo 项目不要再次执行 <code>hexo init</code>。克隆源码后进入项目目录并运行 <code>npm install</code> 即可恢复依赖。</p>
+</div>
+
+<h2 id="Hexo-目录说明"><a href="#Hexo-目录说明" class="headerlink" title="Hexo 目录说明"></a>Hexo 目录说明</h2><table>
+<thead>
+<tr>
+<th>路径</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>_config.yml</code></td>
+<td>站点、链接、生成规则和部署设置</td>
+</tr>
+<tr>
+<td><code>source/_posts</code></td>
+<td>Markdown 文章源文件</td>
+</tr>
+<tr>
+<td><code>themes</code></td>
+<td>主题目录</td>
+</tr>
+<tr>
+<td><code>scaffolds</code></td>
+<td>新文章和页面的模板</td>
+</tr>
+<tr>
+<td><code>public</code></td>
+<td>Hexo 生成的静态网站</td>
+</tr>
+<tr>
+<td><code>package.json</code></td>
+<td>项目命令和依赖清单</td>
+</tr>
+<tr>
+<td><code>node_modules</code></td>
+<td>本机安装的依赖，不应手工编辑</td>
+</tr>
+</tbody></table>
+<p>根目录和主题目录都可能存在 <code>_config.yml</code>。根目录配置整个站点，主题配置文件控制界面与主题功能，修改时需要先确认文件位置。</p>
+<h2 id="安装-Butterfly-主题"><a href="#安装-Butterfly-主题" class="headerlink" title="安装 Butterfly 主题"></a>安装 Butterfly 主题</h2><p>在 Hexo 项目根目录下载 Butterfly：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone <span class="literal">-b</span> master https://github.com/jerryc127/hexo<span class="literal">-theme-butterfly</span>.git themes/butterfly</span><br></pre></td></tr></table></figure>
+
+<p>根据所用 Butterfly 版本安装需要的渲染器，然后在根目录 <code>_config.yml</code> 中设置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">butterfly</span></span><br></pre></td></tr></table></figure>
+
+<p>Butterfly 的外观、菜单、头像、代码块和侧边栏等选项由主题配置控制。修改配置后建议先清理缓存再预览：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建-GitHub-Pages-仓库"><a href="#创建-GitHub-Pages-仓库" class="headerlink" title="创建 GitHub Pages 仓库"></a>创建 GitHub Pages 仓库</h2><p>创建名称为以下格式的公开仓库：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GitHub用户名.github.io</span><br></pre></td></tr></table></figure>
+
+<p>例如用户名为 <code>myworldandyou</code>，仓库名称就是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myworldandyou.github.io</span><br></pre></td></tr></table></figure>
+
+<p>对应的网站地址为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://myworldandyou.github.io/</span><br></pre></td></tr></table></figure>
+
+<p>在仓库的 <code>Settings → Pages</code> 中选择从分支发布，并将发布来源设置为 <code>main</code> 分支和 <code>/ (root)</code> 目录。</p>
+<h2 id="配置-Git-与-SSH"><a href="#配置-Git-与-SSH" class="headerlink" title="配置 Git 与 SSH"></a>配置 Git 与 SSH</h2><p>设置提交者信息：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config <span class="literal">--global</span> user.name <span class="string">&quot;你的GitHub用户名&quot;</span></span><br><span class="line">git config <span class="literal">--global</span> user.email <span class="string">&quot;你的邮箱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果还没有 SSH 密钥，可以创建 Ed25519 密钥：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh<span class="literal">-keygen</span> <span class="literal">-t</span> ed25519 <span class="literal">-C</span> <span class="string">&quot;你的邮箱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>将公钥内容添加到 GitHub 的 <code>Settings → SSH and GPG keys</code>，然后测试连接：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="literal">-T</span> git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>GitHub 提示身份验证成功后，才能通过 SSH 地址部署。</p>
+<h2 id="配置-Hexo-部署"><a href="#配置-Hexo-部署" class="headerlink" title="配置 Hexo 部署"></a>配置 Hexo 部署</h2><p>安装部署插件：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo<span class="literal">-deployer-git</span> <span class="literal">--save</span></span><br></pre></td></tr></table></figure>
+
+<p>在根目录 <code>_config.yml</code> 中配置网站地址和部署目标：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">url:</span> <span class="string">https://myworldandyou.github.io</span></span><br><span class="line"></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:myworldandyou/myworldandyou.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br></pre></td></tr></table></figure>
+
+<p>YAML 中冒号后需要保留空格，缩进也必须一致。</p>
+<h2 id="创建和编辑文章"><a href="#创建和编辑文章" class="headerlink" title="创建和编辑文章"></a>创建和编辑文章</h2><p>进入 Hexo 项目根目录后执行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">&quot;文章名称&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>Hexo 会在 <code>source/_posts</code> 中创建 Markdown 文件。文章开头的 Front Matter 用于设置标题、日期、分类和标签：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">我的第一篇文章</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2026-09-22 10:00:00</span></span><br><span class="line"><span class="attr">categories:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">学习记录</span></span><br><span class="line"><span class="attr">tags:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">Hexo</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">文章摘要</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+
+<p>在摘要结尾加入下面的标记，可以控制首页只显示标记之前的内容：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- more --&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="本地预览"><a href="#本地预览" class="headerlink" title="本地预览"></a>本地预览</h2><p>写完文章后先在本地检查：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>http://localhost:4000</code>，检查以下项目：</p>
+<ul>
+<li>首页能否看到新文章。</li>
+<li>文章中的标题、表格和代码块是否正确。</li>
+<li>图片和超链接是否能够加载。</li>
+<li>分类、标签和文章链接能否打开。</li>
+</ul>
+<p>如果 4000 端口被占用，可以换一个端口：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server <span class="literal">-p</span> <span class="number">4001</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="保存源码"><a href="#保存源码" class="headerlink" title="保存源码"></a>保存源码</h2><p>本站在 <code>hexo-source</code> 分支保存源文件。提交前确认所在分支和改动：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch <span class="literal">--show-current</span></span><br><span class="line">git status</span><br></pre></td></tr></table></figure>
+
+<p>保存源码：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit <span class="literal">-m</span> <span class="string">&quot;Add a new blog post&quot;</span></span><br><span class="line">git push origin hexo<span class="literal">-source</span></span><br></pre></td></tr></table></figure>
+
+<p>这一步只保存 Hexo 源码，不会直接更新公开网页。</p>
+<h2 id="生成并部署网站"><a href="#生成并部署网站" class="headerlink" title="生成并部署网站"></a>生成并部署网站</h2><p>确认本地预览正常后依次执行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>三个命令分别完成以下工作：</p>
+<ol>
+<li><code>hexo clean</code> 删除旧缓存和旧的生成结果。</li>
+<li><code>hexo generate</code> 根据 Markdown、配置和主题重新生成 <code>public</code>。</li>
+<li><code>hexo deploy</code> 将生成结果推送到远程 <code>main</code> 分支。</li>
+</ol>
+<p>也可以在生成后立即部署：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate <span class="literal">--deploy</span></span><br></pre></td></tr></table></figure>
+
+<p>部署成功时，终端通常会显示：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HEAD -&gt; main</span><br><span class="line">INFO  Deploy done: git</span><br></pre></td></tr></table></figure>
+
+<p>等待 GitHub Pages 更新后，访问网站并按 <code>Ctrl+F5</code> 强制刷新。</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="部署成功但网页没有更新"><a href="#部署成功但网页没有更新" class="headerlink" title="部署成功但网页没有更新"></a>部署成功但网页没有更新</h3><p>先确认生成步骤没有跳过：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>再检查 GitHub 仓库的 <code>main</code> 分支是否产生新提交，以及 Pages 发布来源是否为 <code>main</code> 和 <code>/ (root)</code>。GitHub Pages 更新可能需要短暂等待，浏览器缓存也可能继续显示旧页面。</p>
+<h3 id="SSH-权限错误"><a href="#SSH-权限错误" class="headerlink" title="SSH 权限错误"></a>SSH 权限错误</h3><p>如果出现 <code>Permission denied (publickey)</code>，执行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="literal">-T</span> git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>确认本机公钥已经添加到当前 GitHub 账号。</p>
+<h3 id="找不到部署插件"><a href="#找不到部署插件" class="headerlink" title="找不到部署插件"></a>找不到部署插件</h3><p>如果出现 <code>Deployer not found: git</code>，执行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo<span class="literal">-deployer-git</span> <span class="literal">--save</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="修改主题后没有变化"><a href="#修改主题后没有变化" class="headerlink" title="修改主题后没有变化"></a>修改主题后没有变化</h3><p>Hexo 可能仍在使用缓存。清理后重新生成：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br></pre></td></tr></table></figure>
+
+<h3 id="不要直接修改-public"><a href="#不要直接修改-public" class="headerlink" title="不要直接修改 public"></a>不要直接修改 public</h3><p><code>public</code> 是 Hexo 自动生成的结果。再次执行 <code>hexo generate</code> 时，直接修改其中 HTML 的内容可能被覆盖。长期维护的内容应写入 <code>source</code>、主题配置或自定义样式文件。</p>
+<h2 id="日常更新流程"><a href="#日常更新流程" class="headerlink" title="日常更新流程"></a>日常更新流程</h2><p>以后新增文章可以按以下顺序操作：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">&quot;文章标题&quot;</span></span><br><span class="line">hexo clean</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+<p>确认预览后保存源码：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit <span class="literal">-m</span> <span class="string">&quot;Add article&quot;</span></span><br><span class="line">git push origin hexo<span class="literal">-source</span></span><br></pre></td></tr></table></figure>
+
+<p>最后生成并发布：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://butterfly.js.org/">Butterfly 主题文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.github.com/zh/pages">GitHub Pages 文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://jrunding.github.io/2023/03/04/Hexo-Github-Butterfly%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">Hexo + GitHub + Butterfly 搭建博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://antiqueeeee.github.io/Hexo%20+%20Github%20page%20+%20Butterfly%20+%20Github%20Action%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">Hexo + GitHub Pages + Butterfly + GitHub Actions 搭建个人博客</a></li>
+</ul>
+<p>本文结合以上资料与本站的实际配置整理。参考教程包含手动部署和 GitHub Actions 两种思路；本站当前采用 <code>hexo deploy</code> 手动发布到 <code>main</code> 分支的方式。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://myworldandyou.github.io">王国康</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://myworldandyou.github.io/2026/09/22/Hexo-GitHub-Pages-Butterfly-Guide/">https://myworldandyou.github.io/2026/09/22/Hexo-GitHub-Pages-Butterfly-Guide/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://myworldandyou.github.io" target="_blank">计算机网络实验指导</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hexo/">Hexo</a><a class="post-meta__tags" href="/tags/GitHub-Pages/">GitHub Pages</a><a class="post-meta__tags" href="/tags/Butterfly/">Butterfly</a><a class="post-meta__tags" href="/tags/Git/">Git</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/09/22/Computer-Network-Lab-1/" title="实验一：静态网页制作"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">实验一：静态网页制作</div></div><div class="info-2"><div class="info-item-1">本实验完成一个内容完整、能够公开访问的静态网页。你需要在网页中使用图片和超链接，发布一篇新博客，并通过浏览器开发者工具确认网页使用的 HTTP 协议版本。 实验任务完成以下内容：  制作一个主题明确、内容充实的网页。 发布一篇新的博客文章。 检查网页使用的 HTTP 协议版本。 在网页中加入至少三个超链接，并包含图片。  网页主题可以选择自我介绍、家乡介绍、学校介绍、生活分享或研究分享。页面框架可以自行决定，不要求必须使用 Hexo。 实验环境采用 Hexo 方案时，需要安装以下工具：    工具 用途 检查命令    Node.js 运行 Hexo node --version   npm 安装和管理依赖 npm --version   Git 管理代码并连接 GitHub git --version   Hexo 将 Markdown 生成静态网页 npx hexo version   HTML 与网页结构HTML 是超文本标记语言。浏览器读取 HTML 标签，并将文字、图片、链接等内容显示为网页。一个最小页面包含文档声明、头部信息和页面主体： 123456789101112...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/22/Computer-Network-Lab-1/" title="实验一：静态网页制作"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-22</div><div class="info-item-2">实验一：静态网页制作</div></div><div class="info-2"><div class="info-item-1">本实验完成一个内容完整、能够公开访问的静态网页。你需要在网页中使用图片和超链接，发布一篇新博客，并通过浏览器开发者工具确认网页使用的 HTTP 协议版本。 实验任务完成以下内容：  制作一个主题明确、内容充实的网页。 发布一篇新的博客文章。 检查网页使用的 HTTP 协议版本。 在网页中加入至少三个超链接，并包含图片。  网页主题可以选择自我介绍、家乡介绍、学校介绍、生活分享或研究分享。页面框架可以自行决定，不要求必须使用 Hexo。 实验环境采用 Hexo 方案时，需要安装以下工具：    工具 用途 检查命令    Node.js 运行 Hexo node --version   npm 安装和管理依赖 npm --version   Git 管理代码并连接 GitHub git --version   Hexo 将 Markdown 生成静态网页 npx hexo version   HTML 与网页结构HTML 是超文本标记语言。浏览器读取 HTML 标签，并将文字、图片、链接等内容显示为网页。一个最小页面包含文档声明、头部信息和页面主体： 123456789101112...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">王国康</div><div class="author-info-description">计算机网络课程实验讲解、操作步骤与提交要求</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">部署结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">2.</span> <span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-Hexo-%E9%A1%B9%E7%9B%AE"><span class="toc-number">3.</span> <span class="toc-text">创建 Hexo 项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo-%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E"><span class="toc-number">4.</span> <span class="toc-text">Hexo 目录说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-Butterfly-%E4%B8%BB%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">安装 Butterfly 主题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-GitHub-Pages-%E4%BB%93%E5%BA%93"><span class="toc-number">6.</span> <span class="toc-text">创建 GitHub Pages 仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-Git-%E4%B8%8E-SSH"><span class="toc-number">7.</span> <span class="toc-text">配置 Git 与 SSH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-Hexo-%E9%83%A8%E7%BD%B2"><span class="toc-number">8.</span> <span class="toc-text">配置 Hexo 部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%92%8C%E7%BC%96%E8%BE%91%E6%96%87%E7%AB%A0"><span class="toc-number">9.</span> <span class="toc-text">创建和编辑文章</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E9%A2%84%E8%A7%88"><span class="toc-number">10.</span> <span class="toc-text">本地预览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E5%AD%98%E6%BA%90%E7%A0%81"><span class="toc-number">11.</span> <span class="toc-text">保存源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%B9%B6%E9%83%A8%E7%BD%B2%E7%BD%91%E7%AB%99"><span class="toc-number">12.</span> <span class="toc-text">生成并部署网站</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">13.</span> <span class="toc-text">常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E6%88%90%E5%8A%9F%E4%BD%86%E7%BD%91%E9%A1%B5%E6%B2%A1%E6%9C%89%E6%9B%B4%E6%96%B0"><span class="toc-number">13.1.</span> <span class="toc-text">部署成功但网页没有更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSH-%E6%9D%83%E9%99%90%E9%94%99%E8%AF%AF"><span class="toc-number">13.2.</span> <span class="toc-text">SSH 权限错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%BE%E4%B8%8D%E5%88%B0%E9%83%A8%E7%BD%B2%E6%8F%92%E4%BB%B6"><span class="toc-number">13.3.</span> <span class="toc-text">找不到部署插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E4%B8%BB%E9%A2%98%E5%90%8E%E6%B2%A1%E6%9C%89%E5%8F%98%E5%8C%96"><span class="toc-number">13.4.</span> <span class="toc-text">修改主题后没有变化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E8%A6%81%E7%9B%B4%E6%8E%A5%E4%BF%AE%E6%94%B9-public"><span class="toc-number">13.5.</span> <span class="toc-text">不要直接修改 public</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%B8%B8%E6%9B%B4%E6%96%B0%E6%B5%81%E7%A8%8B"><span class="toc-number">14.</span> <span class="toc-text">日常更新流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">15.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/22/Hexo-GitHub-Pages-Butterfly-Guide/" title="Hexo + GitHub Pages + Butterfly 博客搭建与部署教程">Hexo + GitHub Pages + Butterfly 博客搭建与部署教程</a><time datetime="2026-09-22T02:00:00.000Z" title="发表于 2026-09-22 10:00:00">2026-09-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/22/Computer-Network-Lab-1/" title="实验一：静态网页制作">实验一：静态网页制作</a><time datetime="2026-09-22T01:00:00.000Z" title="发表于 2026-09-22 09:00:00">2026-09-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/22/Computer-Network/" title="Computer Network">Computer Network</a><time datetime="2025-09-22T15:44:04.000Z" title="发表于 2025-09-22 23:44:04">2025-09-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/22/hello-world/" title="Hello World">Hello World</a><time datetime="2025-09-22T13:55:36.917Z" title="发表于 2025-09-22 21:55:36">2025-09-22</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 王国康</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
